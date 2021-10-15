@@ -1,0 +1,6 @@
+runDocker.sh
+.idea
+log/
+data/
+__pycache__
+*.pyc

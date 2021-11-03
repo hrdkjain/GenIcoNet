@@ -58,21 +58,21 @@ python3 generate.py \
 --samp_weights_dir=<Path to regularized mapping .mat files> \
 --out_dir=<Path to save the processed numpy files>
 ```
-Additional input arguments like `--normalization_mode`, `--nested_dir` and `--subdivision can be passed to `generate.py`
+Additional input arguments like `--normalization_mode`, `--nested_dir` and `--subdivision` can be passed to `generate.py`
 ### Dataset Download (skipping steps 1-2-3-4)
-Alternatively the ModelNet10 dataset used in this work can be downloaded from [here]().
+Alternatively the pre-processed ModelNet10 dataset (`.npz` files) used in this work can be downloaded from [here]().
 
 ### 5. Train GenIcoNet on ModelNet10 dataset
 ```yaml
 python3 run.py --model ico2ico --process train --data_instance trn --batch_size 36 \
 --dataPth /home/user/Dataset/ModelNet10/V128A_AHSO_I5 --train_epoch 700\
---logDir log/ae
+--logDir log/ae_test
 
 python3 run.py --model ico2ico_vae --process train --data_instance trn --batch_size 36 \
 --dataPth /home/user/Dataset/ModelNet10/V128A_AHSO_I5 --train_epoch 600\
---logDir log/vae
+--logDir log/vae_test
 ```
-### 6. Evaluate GenIcoNet
+### 6. Evaluate the trained GenIcoNet
 ```yaml
 python3 run.py --model ico2ico --process test --data_instance val --batch_size 36 \
 --dataPth /home/user/Dataset/ModelNet10/V128A_AHSO_I5 \
@@ -85,7 +85,15 @@ python3 run.py --model ico2ico_vae --process test --data_instance val --batch_si
 The above command uses the last best model for testing. Additional options can be found in `run.py`
 
 ### 7. Visualize Generative Behaviour of GenIcoNet
-To be added
+Alternatively, this project also contains trained models (in `log/` dir) for both the architectures of GenIcoNet and pre-processed [dataset](). This should be enough to reproduce the results shown in the paper.
+```yaml
+python3 app.py --logDir log/ae --model ico2ico --dataPth /home/user/Dataset/ModelNet10/V128A_AHSO_I5
+
+python3 app.py --logDir log/vae --model ico2ico_vae --dataPth /home/user/Dataset/ModelNet10/V128A_AHSO_I5
+```
+Open `http://127.0.0.1:8050/` in your favourite browser, this will launch the dash application for mesh visualization.
+Select model and epochs in the left top and click `Load Model & Files`.
+Nearest neighbor based operations specified in the paper requires computing pca, which can be done by clicking the `pca` option in Mesh Interpolation.
 
 ## Citation
 If you find this project useful in your work, please consider citing:

@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display');
+
+/* Scalable Container
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.container.scalable {
+    width: 100%;
+    max-width: none;
+    margin-left: 0.5em;
+}
+
+/* Dropdowns
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.Select-control {
+    color: #a5b1cd;
+}
+
+.Select {
+    color: #a5b1cd;
+}
+
+.Select-menu-outer {
+    background-color: #2f3445;
+    border: 1px solid gray;
+}
+
+.Select div {
+    background-color: #2f3445;
+}
+
+.Select-menu-outer div:hover {
+    background-color: rgba(255, 255, 255, 0.01);
+}
+
+.Select-value-label {
+    color: #a5b1cd !important;
+}
+
+.Select--single > .Select-control .Select-value, .Select-placeholder {
+    border: 1px solid gray;
+    border-radius: 4px;
+}
+
+#button-stats {
+    background-color: #2f3445;
+    color: #a5b1cd;
+    border-color: gray;
+}
+
+#button-stats:hover {
+    border-color: white;
+}
+
+#button-card {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Slider
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.rc-slider-mark-text {
+    font-size: 0.7vw;
+}
+
+.rc-slider-track {
+    background-color: #13c6e9;
+}
+
+.rc-slider-handle {
+    border: solid 2px #13c6e9;
+}
+
+/* Left column
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#slider-svm-parameter-C-coef {
+    padding: 5px 10px 25px;
+}
+
+#slider-svm-parameter-gamma-coef {
+    padding: 5px 10px 25px
+}
+
+#shrinking-container {
+    padding: 20px 10px 25px 4px
+}

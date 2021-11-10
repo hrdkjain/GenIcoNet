@@ -1045,6 +1045,7 @@ def compute_output5_graph(n_clicks, file51_id, operation_512, file52_id, operati
                                                               350, False)
     else:
         input_figure55 = None
+        output_figure56 = None
 
     return output_figure54, input_figure55, text, output_figure56
 

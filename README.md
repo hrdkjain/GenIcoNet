@@ -60,7 +60,7 @@ python3 generate.py \
 ```
 Additional input arguments like `--normalization_mode`, `--nested_dir` and `--subdivision` can be passed to `generate.py`
 ### Dataset Download (skipping steps 1-2-3-4)
-Alternatively the pre-processed ModelNet10 dataset (`.npz` files) used in this work can be downloaded from [here]().
+Alternatively the pre-processed ModelNet10 dataset (`.npz` files) used in this work can be downloaded from [here](http://dx.doi.org/10.14279/depositonce-12728).
 
 ### 5. Train GenIcoNet on ModelNet10 dataset
 ```yaml

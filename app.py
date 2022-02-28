@@ -1252,17 +1252,18 @@ for i in [8,9]:
             Input('button-general%i' %i, 'n_clicks')
         ],
         [
-            State('general%i-input' %i, 'value')
+            State('general%i-input' %i, 'value'),
+            State('general%i-ext' % i, 'value')
         ]
     )
-    def update_general_list(n_clicks, root_dir):
+    def update_general_list(n_clicks, root_dir, ext):
         if n_clicks is None or n_clicks <= 0:
             raise PreventUpdate
-        fList = [{'label': f, 'value': f} for f in sorted(os.listdir(root_dir)) if os.path.isfile(os.path.join(root_dir,f)) and f.endswith(SHAPE_EXT)]
+        fList = [{'label': f, 'value': f} for f in sorted(os.listdir(root_dir)) if os.path.isfile(os.path.join(root_dir,f)) and f.endswith(ext)]
         return fList, fList, fList, fList
 
 # compute general graph
-def compute_output89_graph(file, root_dir, showEdges, id):
+def compute_output89_graph(file, root_dir, subdivision, showEdges, id):
     if file is None:
         raise PreventUpdate
 
@@ -1273,6 +1274,11 @@ def compute_output89_graph(file, root_dir, showEdges, id):
         f = np.vstack(plydata['face'].data['vertex_indices'])
     elif fileName.endswith('.off'):
         v, f = python_utils.read_off(fileName)
+    elif fileName.endswith('.npz'):
+        f = get_ico_faces(subdivision)
+        _, v = run.data.loadIcoFile({'ico': {'ext': '.npz', 'width': 2 ** (subdivision + 1)}}, fileName)
+        v = v[:3,:]
+    # output_figure = visualizer_utils.create_mesh_figure(v, f, 'Output{}'.format(i), 350, 350, len(showEdges))
     output_figure = visualizer_utils.create_mesh_figure(v, f, 'Output{}'.format(i), 350, 350, len(showEdges))
     return output_figure
 for i in [8,9]:
@@ -1284,6 +1290,7 @@ for i in [8,9]:
             ],
             [
                 State('general%i-input' %i, 'value'),
+                State('general%i-subdivision' %i, 'value'),
                 State('showEdges', 'value')
             ]
         )(partial(compute_output89_graph, id=i))
@@ -1310,7 +1317,7 @@ for i in [8,9]:
             if n_clicks is None or n_clicks <= 0 or file is None:
                 raise PreventUpdate
             fileName = '{}'.format(os.path.splitext(os.path.join(root_dir, file))[0])
-            return visualizer_utils.save_figure(params['dataDir'], fileName, output_figure, ext, False)
+            return visualizer_utils.save_figure('', fileName, output_figure, ext, True)
 
 # python functions for repeatative tasks
 def loadModelnDataset(model_name, data_instance, test_epoch):
@@ -1535,7 +1542,7 @@ if __name__ == '__main__':
     DECODER_MODEL = None
     DATASET = None
     PCA_DATASET = None
-    SHAPE_EXT = tuple(['.off', '.ply'])
+    SHAPE_EXT = tuple(['.off', '.ply', '.npz'])
     pca = None
     MODEL_OPTIONS = [{'label': 'ico2ico', 'value': 'ico2ico'},
                      {'label': 'ico2ico_vae', 'value': 'ico2ico_vae'}]
@@ -1922,6 +1929,15 @@ if __name__ == '__main__':
                                                         children=[
                                                             drc.NamedInput('Input dir to view files', id='general8-input', value='',
                                                                            style={'color': '#a5acc3', 'width': '100%', 'font-size': 11}),
+                                                            drc.HorizontalCard(style = {'vertical-align': 'middle'}, children=[
+                                                                dcc.RadioItems(id='general8-ext',
+                                                                    labelStyle={'display': 'inline-block'},
+                                                                    value=SHAPE_EXT[2],
+                                                                    options=[{'label': SHAPE_EXT[0], 'value': SHAPE_EXT[0]},
+                                                                             {'label': SHAPE_EXT[1], 'value': SHAPE_EXT[1]},
+                                                                             {'label': SHAPE_EXT[2], 'value': SHAPE_EXT[2]}]),
+                                                                dcc.Input(id='general8-subdivision', type='number', value=5,
+                                                                          style={'width': '25%', 'color': '#a5acc3', 'margin': '0px 0px 0px 0px'},),],),
                                                             html.Button('List Files', id='button-general8',
                                                                         style={'width': '100%',
                                                                                'margin': '10px 0px 0px 0px'}),
@@ -1948,10 +1964,18 @@ if __name__ == '__main__':
                                                         ],),
                                                drc.Card(id='general9-card',
                                                         children=[
-                                                            drc.NamedInput('Input dir to view files', id='general9-input', value='',
+                                                            drc.NamedInput('Input dir to view files', id='general9-input', value='/home/hardik/ShapeReconstrution/airplane_V128A_AHSO_I5_npz',
                                                                            style={'color': '#a5acc3', 'width': '100%',
                                                                                   'font-size': 11}),
-                                                            html.Button('List Files', id='button-general9',
+                                                            drc.HorizontalCard(style = {'vertical-align': 'middle'}, children=[
+                                                                dcc.RadioItems(id='general9-ext',
+                                                                    labelStyle={'display': 'inline-block'},
+                                                                    value=SHAPE_EXT[2],
+                                                                    options=[{'label': SHAPE_EXT[0], 'value': SHAPE_EXT[0]},
+                                                                             {'label': SHAPE_EXT[1], 'value': SHAPE_EXT[1]},
+                                                                             {'label': SHAPE_EXT[2], 'value': SHAPE_EXT[2]}]),
+                                                                dcc.Input(id='general9-subdivision', type='number', value=5,
+                                                                          style={'width': '25%', 'color': '#a5acc3', 'margin': '0px 0px 0px 0px'},),],),                                                            html.Button('List Files', id='button-general9',
                                                                         style={'width': '100%',
                                                                                'margin': '10px 0px 0px 0px'}),
                                                             dcc.Dropdown(

@@ -96,6 +96,7 @@ def create_mesh_figure(v, f, name, width, height, showLines=False, ref_figure = 
         scene_zaxis_visible=False,
         # paper_bgcolor='rgb(50,50,50)',
         margin=dict(l=0,r=0,t=30,b=0),
+        scene=dict(aspectmode='data')
     )
 
     if showLines:
